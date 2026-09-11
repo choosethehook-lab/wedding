@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF7F0">
+<title>دعوة زفاف محمد و طيبة</title>
+<meta name="description" content="يسعدنا دعوتكم لحضور حفل زفاف محمد و طيبة">
+<meta property="og:title" content="دعوة زفاف محمد و طيبة">
+<meta property="og:description" content="يسعدنا دعوتكم لحضور حفل زفاف محمد و طيبة">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ستارة تحميل رقيقة تُزال فور جهوزية الصفحة -->
+<div id="loading-veil" aria-hidden="true"></div>
+
+<!-- طبقة زخرفية خافتة (بتلات/غبار ضوئي) خلف كل الشاشات -->
+<canvas id="ambient" aria-hidden="true"></canvas>
+
+<button id="music-toggle" aria-label="تشغيل/إيقاف الموسيقى" aria-pressed="true">
+  <span class="music-ring"></span>
+  <svg viewBox="0 0 24 24" class="icon-note"><path d="M9 17V5.6c0-.5.35-.94.85-1.05l8-1.8A1.08 1.08 0 0 1 19.2 3.7v9.35M9 17a3 3 0 1 1-2-2.83A3 3 0 0 1 9 17Zm10.2-4.9a3 3 0 1 1-2-2.83 3 3 0 0 1 2 2.83Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg viewBox="0 0 24 24" class="icon-mute"><path d="M9 17V5.6c0-.5.35-.94.85-1.05l8-1.8A1.08 1.08 0 0 1 19.2 3.7v9.35M9 17a3 3 0 1 1-2-2.83A3 3 0 0 1 9 17Zm10.2-4.9a3 3 0 1 1-2-2.83 3 3 0 0 1 2 2.83Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".35"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+</button>
+
+<div id="app">
+  <div id="track">
+
+    <!-- ١ · الغلاف -->
+    <section class="screen" id="s1" dir="rtl">
+      <div class="screen__inner" id="cover">
+        <svg class="flourish flourish-top" viewBox="0 0 160 40"><path d="M10 20 C40 4, 60 4, 80 20 C100 4, 120 4, 150 20" fill="none" stroke="#B8944F" stroke-width="0.8" opacity=".55"/><circle cx="80" cy="20" r="2.2" fill="#B8944F"/></svg>
+
+        <div class="cover-label">دعوة زفاف</div>
+        <div class="cover-names">
+          <span id="groom-name"></span>
+          <div class="cover-and">و</div>
+          <span id="bride-name"></span>
+        </div>
+
+        <div class="ribbon-wrap bloom">
+          <svg viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="60" fill="none" stroke="#E6DACB" stroke-width="1"/>
+            <circle cx="75" cy="75" r="68" fill="none" stroke="#B8944F" stroke-width="0.5" opacity=".4"/>
+            <g class="ribbon-bow">
+              <path d="M75 75 C55 55 35 60 30 78 C27 90 40 96 55 88 C64 83 70 79 75 75Z" fill="#F5DCD3" stroke="#D9AFA0" stroke-width="1"/>
+              <path d="M75 75 C95 55 115 60 120 78 C123 90 110 96 95 88 C86 83 80 79 75 75Z" fill="#F5DCD3" stroke="#D9AFA0" stroke-width="1"/>
+              <circle cx="75" cy="75" r="6" fill="#B8944F"/>
+            </g>
+          </svg>
+        </div>
+
+        <button class="open-btn" id="open-btn">افتح الدعوة</button>
+        <div class="cover-hint bloom">مِن قلبين، دعوةٌ واحدة</div>
+
+        <svg class="flourish flourish-bottom" viewBox="0 0 160 40"><path d="M10 20 C40 36, 60 36, 80 20 C100 36, 120 36, 150 20" fill="none" stroke="#B8944F" stroke-width="0.8" opacity=".55"/></svg>
+      </div>
+    </section>
+
+    <!-- ٢ · الدعوة الرسمية -->
+    <section class="screen" id="s2" dir="rtl">
+      <div class="screen__inner">
+        <div class="card">
+          <svg class="corner corner-tl" viewBox="0 0 30 30"><path d="M2 20 V6 Q2 2 6 2 H20" fill="none" stroke="#B8944F" stroke-width="1"/></svg>
+          <svg class="corner corner-tr" viewBox="0 0 30 30"><path d="M28 20 V6 Q28 2 24 2 H10" fill="none" stroke="#B8944F" stroke-width="1"/></svg>
+          <svg class="corner corner-bl" viewBox="0 0 30 30"><path d="M2 10 V24 Q2 28 6 28 H20" fill="none" stroke="#B8944F" stroke-width="1"/></svg>
+          <svg class="corner corner-br" viewBox="0 0 30 30"><path d="M28 10 V24 Q28 28 24 28 H10" fill="none" stroke="#B8944F" stroke-width="1"/></svg>
+
+          <div class="bismillah">بسم الله الرحمن الرحيم</div>
+          <div class="invite-line">نتشرّف بدعوتكم لمشاركتنا فرحة العمر بحفل زفاف</div>
+          <div class="invite-names"><span id="invite-groom"></span> <span class="and-mark">و</span> <span id="invite-bride"></span></div>
+          <div class="ornament-divider"><span></span><svg viewBox="0 0 16 16" width="10" height="10"><path d="M8 0 L11 8 L8 16 L5 8Z" fill="#B8944F"/></svg><span></span></div>
+          <div class="invite-datetime">
+            <div id="invite-date"></div>
+            <div id="invite-time"></div>
+          </div>
+          <div class="invite-wish">بحضوركم يكتمل الفرح وتزداد الليلة بهجةً وضياء</div>
+          <div class="guest-welcome is-hidden" id="guest-welcome"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ٣ · الموعد -->
+    <section class="screen" id="s3" dir="rtl">
+      <div class="screen__inner">
+        <h2>الموعد</h2>
+        <div class="countdown-ring">
+          <svg viewBox="0 0 140 140" class="cd-svg">
+            <defs>
+              <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#D9B76A"/>
+                <stop offset="100%" stop-color="#997259"/>
+              </linearGradient>
+            </defs>
+            <circle cx="70" cy="70" r="60" class="cd-track"/>
+            <circle cx="70" cy="70" r="60" class="cd-progress" id="cd-progress-circle" transform="rotate(-90 70 70)"/>
+          </svg>
+          <div class="countdown-num"><b id="cd-days">0</b><span>يوماً</span></div>
+        </div>
+        <div class="countdown-grid">
+          <div class="cd-unit"><b id="cd-h">00</b><span>ساعة</span></div>
+          <div class="cd-unit"><b id="cd-m">00</b><span>دقيقة</span></div>
+          <div class="cd-unit"><b id="cd-s">00</b><span>ثانية</span></div>
+        </div>
+        <div id="invite-date-2" class="cd-date"></div>
+        <div id="invite-time-2" class="cd-time"></div>
+
+        <button class="save-date-btn" id="save-date-btn">احفظ الموعد في التقويم</button>
+        <div class="calendar-menu is-hidden" id="calendar-menu">
+          <a id="google-cal-link" href="#" target="_blank" rel="noopener">إضافة إلى تقويم Google</a>
+          <button id="ics-download">تنزيل ملف تقويم (.ics)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ٤ · المكان -->
+    <section class="screen" id="s4" dir="rtl">
+      <div class="screen__inner">
+        <h2>المكان</h2>
+        <div class="map-art">
+          <svg viewBox="0 0 280 150">
+            <rect width="280" height="150" fill="#EEF1E6"/>
+            <path d="M0 60 H280 M0 100 H280 M70 0 V150 M180 0 V150" stroke="#fff" stroke-width="4"/>
+            <path d="M0 82 C60 70 140 92 280 76" fill="none" stroke="#D6E0CC" stroke-width="7"/>
+            <path d="M140 66 C126 48 128 32 140 32 C152 32 154 48 140 66Z" fill="#B8944F"/>
+            <circle cx="140" cy="44" r="5" fill="#FBF7F0"/>
+          </svg>
+        </div>
+        <div class="venue-name" id="venue-name"></div>
+        <div class="venue-addr" id="venue-addr"></div>
+        <button class="map-btn" id="map-btn">افتح الخريطة</button>
+      </div>
+    </section>
+
+    <!-- ٥ · تأكيد الحضور -->
+    <section class="screen" id="s5" dir="rtl">
+      <div class="screen__inner">
+        <h2>تأكيد الحضور</h2>
+        <form class="rsvp-form" id="rsvp-form">
+          <input type="text" id="rsvp-name" placeholder="اسمك الكريم" required>
+          <div class="rsvp-row">
+            <button type="button" class="rsvp-choice yes" data-choice="yes">نتشرّف بالحضور</button>
+            <button type="button" class="rsvp-choice no" data-choice="no">نعتذر هذه المرّة</button>
+          </div>
+          <select id="rsvp-companions">
+            <option value="0">بمفردي</option>
+            <option value="1">مع مرافق واحد</option>
+            <option value="2">مع مرافقَين</option>
+            <option value="3">مع ٣ مرافقين</option>
+            <option value="4">مع ٤ مرافقين فأكثر</option>
+          </select>
+          <textarea id="rsvp-message" rows="2" maxlength="120" placeholder="كلمة قصيرة لنا (اختياري)"></textarea>
+          <button type="submit" class="rsvp-submit" id="rsvp-submit" disabled>إرسال التأكيد</button>
+          <div class="rsvp-note" id="rsvp-note">اختر أحد الخيارين أعلاه لتفعيل الإرسال</div>
+        </form>
+        <div class="rsvp-count" id="rsvp-count"></div>
+      </div>
+    </section>
+
+    <!-- ٦ · الختام — فوانيس الأمنيات -->
+    <section class="screen" id="s6" dir="rtl">
+      <div class="screen__inner">
+        <div class="sky" id="sky"></div>
+
+        <div class="closing-emblem">
+          <svg viewBox="0 0 64 64">
+            <circle cx="24" cy="32" r="12" fill="none" stroke="#B8944F" stroke-width="1"/>
+            <circle cx="40" cy="32" r="12" fill="none" stroke="#B8944F" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="closing-title">من قلبين، بيتٌ واحد</div>
+        <div class="closing-sub">شكراً لأنكم جزءٌ من فرحتنا<br>أمنياتكم تُضيء ليلتنا</div>
+
+        <form class="wish-form" id="wish-form">
+          <input type="text" id="wish-input" maxlength="60" placeholder="اكتب أمنيةً صغيرة لنا">
+          <button type="submit" class="wish-btn">أطلقها</button>
+        </form>
+
+        <div class="brand-credit">made by hook.</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<button class="side-arrow" id="prev-arrow" aria-label="السابق">›</button>
+<button class="side-arrow" id="next-arrow" aria-label="التالي">‹</button>
+<div id="nav-dots"></div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
