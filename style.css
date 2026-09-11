@@ -1,5 +1,5 @@
 /* ============================================================
-   دعوة محمد و طيبة — الأنماط (نسخة مطوَّرة، طابع فخم وهادئ)
+   دعوة محمد و طيبة — الأنماط (صفحة سكرول واحدة متصلة)
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital@1&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Marcellus&display=swap');
@@ -36,11 +36,10 @@
 
 *{box-sizing:border-box}
 html,body{
-  margin:0; padding:0; height:100%;
+  margin:0; padding:0;
   background:var(--cream);
   color:var(--ink);
   font-family:var(--sans);
-  overflow:hidden;
   -webkit-tap-highlight-color:transparent;
 }
 body{ direction:rtl; }
@@ -50,6 +49,11 @@ button{ font-family:inherit; cursor:pointer; }
 input,textarea,select{ font-family:inherit; }
 
 :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:4px; }
+
+/* قبل فتح الدعوة: الصفحة مقفلة على الغلاف فقط، بلا تمرير */
+html.pre-open, html.pre-open body{
+  height:100%; overflow:hidden;
+}
 
 /* ---------- ستارة التحميل ---------- */
 #loading-veil{
@@ -68,32 +72,20 @@ input,textarea,select{ font-family:inherit; }
   opacity:.5;
 }
 
-/* ---------- إطار الشاشات الستّ ---------- */
-#app{
-  position:relative;
-  width:100%; height:100dvh;
-  overflow:hidden;
-  z-index:2;
-}
-#track{
-  display:flex;
-  height:100%;
-  direction:ltr; /* ترتيب فيزيائي ثابت للشرائح بصرف النظر عن اتجاه الصفحة */
-  transition: transform .72s var(--ease);
-  will-change: transform;
-}
+/* ---------- الصفحة: أقسام تنسدل عادي ---------- */
+#page{ position:relative; z-index:2; }
+
 .screen{
-  flex:0 0 100%;
-  width:100%; height:100%;
-  position:relative;
+  width:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  padding:calc(32px + var(--safe-t)) 24px calc(32px + var(--safe-b));
-  overflow-y:auto;
-  overflow-x:hidden;
+  padding:72px 24px;
+  position:relative;
 }
+#s1{ min-height:100dvh; padding-top:calc(48px + var(--safe-t)); padding-bottom:calc(48px + var(--safe-b)); }
+
 .screen__inner{
   width:100%;
   max-width:420px;
@@ -103,19 +95,19 @@ input,textarea,select{ font-family:inherit; }
   text-align:center;
   gap:14px;
 }
-/* ظهور تدريجي منسّق للعناصر عند وصول الشاشة */
+/* ظهور تدريجي عند وصول القسم أثناء التمرير */
 .screen__inner > *{
   opacity:0;
-  transform: translateY(10px);
-  transition: opacity .6s var(--ease), transform .6s var(--ease);
+  transform: translateY(16px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
   transition-delay: calc(var(--i, 0) * 70ms);
 }
-.screen.is-active .screen__inner > *{
+.screen__inner.is-visible > *{
   opacity:1;
   transform: translateY(0);
 }
 
-/* خلفيات كل شاشة */
+/* خلفيات كل قسم */
 #s1{ background: var(--cream); }
 #s2{ background: var(--cream-soft); }
 #s3{ background: var(--blush); }
@@ -218,6 +210,16 @@ input,textarea,select{ font-family:inherit; }
 .bloom{ opacity:0; transform: scale(0); transition: transform .6s var(--ease), opacity .5s ease; }
 .opened .bloom{ opacity:1; transform: scale(1); }
 .opened .cover-hint{ transform:none; }
+
+.scroll-cue{
+  position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
+  width:34px; height:34px; border-radius:50%;
+  border:1px solid var(--hairline); background:rgba(255,253,249,.7);
+  display:flex; align-items:center; justify-content:center;
+  animation: bounceCue 1.8s ease-in-out infinite;
+}
+.scroll-cue.is-hidden{ display:none; }
+@keyframes bounceCue{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(6px); } }
 
 /* ---------- شاشة ٢: الدعوة الرسمية ---------- */
 .card{
@@ -392,39 +394,19 @@ input,textarea,select{ font-family:inherit; }
 .wish-btn:active{ transform:scale(.95); }
 .brand-credit{ font-family:var(--brand); font-size:11px; color:var(--gold); margin-top:8px; }
 
-/* ---------- التنقّل: نقاط + أسهم ---------- */
-#nav-dots{
-  position:fixed; bottom:calc(14px + var(--safe-b)); left:50%; transform:translateX(-50%);
-  display:flex; gap:7px; z-index:40;
-}
-#nav-dots.is-hidden{ display:none; }
-.dot{ width:6px; height:6px; border-radius:50%; background:var(--hairline); transition: background .3s ease, transform .3s ease; }
-.dot.active{ background:var(--gold); transform:scale(1.35); }
-
-.side-arrow{
-  position:fixed; top:50%; transform:translateY(-50%);
-  width:40px; height:40px; border-radius:50%;
-  border:1px solid var(--hairline); background:rgba(255,253,249,.82);
-  backdrop-filter: blur(6px);
-  color:var(--ink-mute); font-size:16px; z-index:40;
-  display:flex; align-items:center; justify-content:center;
-  transition: transform .2s ease, box-shadow .25s ease;
-}
-.side-arrow:active{ transform:translateY(-50%) scale(.92); }
-.side-arrow.is-hidden{ display:none; }
-#prev-arrow{ right:calc(14px + var(--safe-r)); }
-#next-arrow{ left:calc(14px + var(--safe-l)); }
-
 @media (max-width:360px){
   .cover-names{ font-size:30px; }
 }
+@media (max-width:480px){
+  .screen{ padding:56px 20px; }
+}
 
 @media (prefers-reduced-motion: reduce){
-  #track{ transition:none; }
   .ribbon-bow, .bloom, .open-btn, .screen__inner > *{ transition:none; }
   .screen__inner > *{ opacity:1; transform:none; }
   .lantern{ animation-duration: .01ms; animation-fill-mode: forwards; }
   #music-toggle.is-playing .music-ring{ animation:none; }
   #loading-veil{ animation-duration:.01ms; }
   #ambient{ display:none; }
+  .scroll-cue{ animation:none; }
 }

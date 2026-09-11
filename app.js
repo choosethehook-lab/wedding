@@ -1,5 +1,5 @@
 // ============================================================
-// دعوة محمد و طيبة — المنطق (نسخة مطوَّرة)
+// دعوة محمد و طيبة — المنطق (صفحة سكرول واحدة متصلة)
 // ============================================================
 (function () {
   "use strict";
@@ -53,7 +53,7 @@
   })();
 
   // ---------------------------------------------------------
-  // ترقيم عناصر كل شاشة لأجل الظهور التدريجي المتتابع (--i)
+  // ترقيم عناصر كل قسم لأجل الظهور التدريجي المتتابع (--i)
   // ---------------------------------------------------------
   document.querySelectorAll(".screen__inner").forEach(function (inner) {
     Array.prototype.forEach.call(inner.children, function (child, i) {
@@ -62,83 +62,49 @@
   });
 
   // ---------------------------------------------------------
-  // التنقّل بين الشاشات
+  // ظهور تدريجي عند التمرير — كل قسم يظهر لحاله أول ما يوصله
+  // المستخدم بالتمرير، بلا أي تنقّل بالنقر
   // ---------------------------------------------------------
-  var track = document.getElementById("track");
-  var screens = Array.prototype.slice.call(document.querySelectorAll(".screen"));
-  var total = screens.length;
-  var current = 0;
-  var unlocked = false; // يُفتح بعد الضغط على "افتح الدعوة"
-
-  var dotsWrap = document.getElementById("nav-dots");
-  var prevArrow = document.getElementById("prev-arrow");
-  var nextArrow = document.getElementById("next-arrow");
-
-  screens.forEach(function (_, i) {
-    var d = document.createElement("div");
-    d.className = "dot" + (i === 0 ? " active" : "");
-    d.addEventListener("click", function () {
-      if (unlocked) goTo(i);
-    });
-    dotsWrap.appendChild(d);
-  });
-  var dots = Array.prototype.slice.call(dotsWrap.children);
-
-  function render() {
-    track.style.transform = "translateX(-" + current * 100 + "%)";
-    dots.forEach(function (d, i) { d.classList.toggle("active", i === current); });
-    screens.forEach(function (sc, i) { sc.classList.toggle("is-active", i === current); });
-    dotsWrap.classList.toggle("is-hidden", !unlocked);
-    prevArrow.classList.toggle("is-hidden", !unlocked || current === 0);
-    nextArrow.classList.toggle("is-hidden", !unlocked || current === total - 1);
-  }
-
-  function goTo(i) {
-    if (!unlocked) return;
-    current = Math.max(0, Math.min(total - 1, i));
-    render();
-  }
-
-  prevArrow.addEventListener("click", function () { goTo(current - 1); });
-  nextArrow.addEventListener("click", function () { goTo(current + 1); });
-
-  document.addEventListener("keydown", function (e) {
-    if (!unlocked) return;
-    if (e.key === "ArrowLeft") goTo(current + 1);
-    if (e.key === "ArrowRight") goTo(current - 1);
-  });
-
-  // سحب باللمس للتنقل
-  (function swipeSetup() {
-    var startX = null;
-    document.getElementById("app").addEventListener("touchstart", function (e) {
-      if (!unlocked) return;
-      startX = e.touches[0].clientX;
-    }, { passive: true });
-    document.getElementById("app").addEventListener("touchend", function (e) {
-      if (!unlocked || startX === null) return;
-      var dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 46) goTo(current + (dx < 0 ? 1 : -1));
-      startX = null;
-    }, { passive: true });
+  (function scrollReveal() {
+    var inners = Array.prototype.slice.call(document.querySelectorAll(".screen__inner"));
+    if (!("IntersectionObserver" in window) || reduceMotion) {
+      inners.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+    inners.forEach(function (el) { io.observe(el); });
   })();
 
   // ---------------------------------------------------------
-  // فتح الدعوة (الشاشة ١) — يكشف بقية الدعوة فقط، بلا علاقة بالصوت
+  // فتح الدعوة — يحرّر التمرير ويسمح بمطالعة بقية الدعوة بالسكرول
+  // العادي، بلا أي "شاشات" أو أزرار تنقّل
   // ---------------------------------------------------------
   var openBtn = document.getElementById("open-btn");
   var coverInner = document.getElementById("cover");
+  var scrollCue = document.getElementById("scroll-cue");
 
   openBtn.addEventListener("click", function () {
-    if (unlocked) return;
     coverInner.classList.add("opened");
     openBtn.classList.add("is-hidden");
 
-    var delay = reduceMotion ? 150 : 950;
+    var delay = reduceMotion ? 100 : 700;
     window.setTimeout(function () {
-      unlocked = true;
-      goTo(1);
+      document.documentElement.classList.remove("pre-open");
+      scrollCue.classList.remove("is-hidden");
+      window.setTimeout(function () { scrollCue.classList.add("is-hidden"); }, 6000);
     }, delay);
+  });
+
+  scrollCue.addEventListener("click", function () {
+    var next = document.getElementById("s2");
+    if (next) next.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
   });
 
   // ---------------------------------------------------------
@@ -221,7 +187,7 @@
     attemptAutoStart();
   }
 
-  // لمسة زخرفية عند كلمة "قرة عيون محمد" — وميض ذهبي خفيف بغض النظر عن الشاشة الحالية
+  // لمسة زخرفية عند كلمة "قرة عيون محمد" — وميض ذهبي خفيف بغض النظر عن موضع التمرير
   var cueScheduled = false;
   function scheduleLyricCue() {
     if (cueScheduled) return;
@@ -255,7 +221,7 @@
   var EVENT_UTC_MS = Date.UTC(WC.y, WC.mo, WC.d, WC.h, WC.mi, WC.s) - 3 * 3600000;
 
   // ---------------------------------------------------------
-  // العدّاد التنازلي (الشاشة ٣) — حلقة SVG بتدرّج ذهبي
+  // العدّاد التنازلي — حلقة SVG بتدرّج ذهبي
   // ---------------------------------------------------------
   (function countdown() {
     var target = EVENT_UTC_MS;
@@ -293,13 +259,11 @@
 
   function pad(n) { return String(n).padStart(2, "0"); }
 
-  // صيغة UTC حقيقية لرابط تقويم Google، مبنية على EVENT_UTC_MS الصحيح
   function fmtUTCms(ms) {
     var d = new Date(ms);
     return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) +
       "T" + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + "00Z";
   }
-  // صيغة توقيت محلي عائم (بلا Z) لملف .ics — يعرض أرقام بغداد كما هي
   function fmtFloating(y, mo, d, h, mi) {
     return y + pad(mo + 1) + pad(d) + "T" + pad(h) + pad(mi) + "00";
   }
@@ -405,7 +369,7 @@
   });
 
   // ---------------------------------------------------------
-  // فوانيس الأمنيات (الشاشة ٦)
+  // فوانيس الأمنيات
   // ---------------------------------------------------------
   var sky = document.getElementById("sky");
 
@@ -426,7 +390,7 @@
     var leftPct = 12 + Math.random() * 76;
     l.style.left = leftPct + "%";
     l.style.setProperty("--drift", (Math.random() * 30 - 15) + "px");
-    if (!animate) l.style.animationDelay = "-9s"; // يظهر مستقرًا فوراً لعناصر سابقة
+    if (!animate) l.style.animationDelay = "-9s";
     l.innerHTML =
       (text ? '<div class="tag">' + text + "</div>" : "") +
       '<div class="body"></div><div class="flame"></div>';
@@ -434,13 +398,11 @@
     l.addEventListener("animationend", function () { l.remove(); });
   }
 
-  // إعادة عرض أمنية هذا الجهاز إن وُجدت
   (function restoreOwnWish() {
     var saved = localStorage.getItem("wedding_wish");
     if (saved) addLantern(saved, false);
   })();
 
-  // محاولة جلب أمنيات باقي الضيوف إن وُجد رابط Google Sheet
   if (CFG.wishesEndpoint) {
     fetch(CFG.wishesEndpoint)
       .then(function (r) { return r.json(); })
@@ -452,7 +414,7 @@
           });
         }
       })
-      .catch(function () { /* بلا اتصال — الأمنيات المحلية فقط تظهر */ });
+      .catch(function () {});
   }
 
   document.getElementById("wish-form").addEventListener("submit", function (e) {
@@ -518,5 +480,4 @@
     window.addEventListener("resize", function () { resize(); seed(); });
   })();
 
-  render();
 })();
